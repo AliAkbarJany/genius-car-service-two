@@ -1,8 +1,24 @@
 import React, { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import './Register.css'
+import auth from '../../../firebase.init';
+import SocialLogin from '../SocialLogin/SocialLogin';
 
 const Register = () => {
+
+    const [
+        createUserWithEmailAndPassword,
+        user,
+        loading,
+        error,
+      ] = useCreateUserWithEmailAndPassword(auth);
+
+      const naviagete=useNavigate()
+
+      if(user){
+        naviagete('/home')
+      }
 
         
     const handleRegister=event=>{
@@ -16,11 +32,9 @@ const Register = () => {
         const name=event.target.name.value;
         const email=event.target.email.value;
         const password=event.target.password.value;
-        console.log(name,email,password)
+        // console.log(name,email,password)
+        createUserWithEmailAndPassword(email, password);
         
-
-       
-
     }
     return (
         <div className='register-form mt-5 '>
@@ -35,6 +49,8 @@ const Register = () => {
                 <input type="submit" value="REGISTER" />
             </form>
             <p>Have An Account??? <Link to='/login' className='fw-bolder text-success'>PLEASE LOGIN</Link> </p>
+
+            <SocialLogin></SocialLogin>
         </div>
     );
 };
