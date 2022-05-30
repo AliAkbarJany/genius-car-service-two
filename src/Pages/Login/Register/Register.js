@@ -4,7 +4,8 @@ import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-fireb
 import './Register.css'
 import auth from '../../../firebase.init';
 import SocialLogin from '../SocialLogin/SocialLogin';
-import { updateProfile } from 'firebase/auth';
+import { updateCurrentUser, updateProfile } from 'firebase/auth';
+import Loading from '../../Shared/Loading/Loading';
 
 const Register = () => {
     const[agree,setAgree]=useState(false);
@@ -15,12 +16,20 @@ const Register = () => {
         loading,
         error,
       ] = useCreateUserWithEmailAndPassword(auth,{sendEmailVerification:true});
+      const [updateProfile, updating, updateError] = useUpdateProfile(auth);
 
       const naviagete=useNavigate()
 
-    //   if(user){
-    //     naviagete('/home')
-    //   }
+      if(user){
+        naviagete('/home')
+      }
+
+      if(loading || updating){
+          return <Loading></Loading>
+      }
+    // if(user){
+    //     console.log('user',user)
+    // }
 
       
 
@@ -45,7 +54,8 @@ const Register = () => {
         // }    
         await updateProfile({ displayName:name });
           console.log('Updated profile');
-          naviagete('/home')
+          alert('Updated profile');
+        //   naviagete('/home')
     
     }
     let errorElement;

@@ -6,6 +6,9 @@ import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../../firebase.init';
 import SocialLogin from '../SocialLogin/SocialLogin';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
     const emailRef=useRef('')
@@ -46,11 +49,17 @@ const Login = () => {
     }
 
 
-    // forget/REset password...
+    // forget/REset password...1
     const resetPassword= async()=>{
         const email=emailRef.current.value;
-        await sendPasswordResetEmail(email);
-        alert('Sent email');
+        if(email){
+            await sendPasswordResetEmail(email);
+            toast('Sent email');
+        }
+        else{
+            toast('please enter your email address')
+        }
+        
     }
 
     // forgrt/reset password...2 er jonno aikahne globaly (email) declare kora hoise
@@ -88,19 +97,27 @@ const Login = () => {
                 <p>Are You New Here?? <Link to='/register'  className='text-danger fw-bolder'>PLEASE REGISTER</Link> </p>
 
                 /* reset password...1 */
-                <p className='fw-bolder'>FORGET PASSWORD???? <Link onClick={resetPassword} to='/register'  className='text-danger '>RESET PASSWORD</Link> </p>
+                <p className='fw-bolder'>FORGET PASSWORD???? <button onClick={resetPassword}   className='text-danger btn btn-link'>RESET PASSWORD</button> </p>
                 // reset password...2
                 <p className='fw-bolder'>FORGET PASSWORD???? 
-                    <Link to='/register'>
+                    {/* <Link to='/register'> */}
                         <button className='btn btn-primary' onClick={async () => {
-                            await sendPasswordResetEmail(email);
-                            alert('Sent email');
+                            // await sendPasswordResetEmail(email);
+                            // alert('Sent email');
+                            if(email){
+                                await sendPasswordResetEmail(email);
+                                toast('Sent email');
+                            }
+                            else{
+                                toast('please enter your email address')
+                            }
                         }}>reset password
                         </button> 
-                    </Link>
+                    {/* </Link> */}
                 </p>
             </Form>
             <SocialLogin></SocialLogin>
+            <ToastContainer />
         </div>
     );
 };
