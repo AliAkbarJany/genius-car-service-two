@@ -12,7 +12,7 @@ const Checkout = () => {
     const [service] = useServiceDetail(serviceId)
     // const [service,setService]=useState({});
     // useEffect(()=>{
-    //     const url=`http://localhost:5000/service/${serviceId}`
+    //     const url=`https://lit-stream-42408.herokuapp.com/service/${serviceId}`
     //     fetch(url)
     //     .then(res=>res.json())
     //     .then(data=>setService(data))
@@ -47,7 +47,7 @@ const Checkout = () => {
             address:event.target.address.value,
             phone:event.target.phone.value
         }
-        axios.post('http://localhost:5000/order',order)
+        axios.post('https://lit-stream-42408.herokuapp.com/order',order)
         .then(response=>{
             console.log(response);
             const {data}=response;
@@ -63,7 +63,7 @@ const Checkout = () => {
             {/* <p>service id:{serviceId}</p> className='w-100 mb-2'
             <p>SERVICE Name:: {service.name}</p> */}
             <form onSubmit={handleOrderPlace}>
-                <input className='w-100 mb-2'  type="text" value={user.displayName} name='name' placeholder='Name' required /><br />
+                <input className='w-100 mb-2'  type="text" value={user?.displayName} name='name' placeholder='Name' required /><br />
                 <input className='w-100 mb-2'  type="email" value={user.email} name='email ' placeholder='Email' required  /><br />
                 <input className='w-100 mb-2'  type="text" value={service.name} name='service' placeholder='Service' /><br />
                 <input className='w-100 mb-2'  type="text" value={service.price}  name='price' placeholder='Price'/><br />
